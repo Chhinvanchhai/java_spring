@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.validation.ConstraintViolationException;
+
 
 @Service
 public class UserSerivce {
@@ -31,7 +33,13 @@ public class UserSerivce {
     }
 
     public User create(User resource) {
-        return this.userRepository.save(resource);
+        try {
+            return this.userRepository.save(resource);
+
+        } catch (ConstraintViolationException ex) {
+            // Handle the validation exception and return a custom response or throw a custom exception
+            throw new RuntimeException("Validation failed: " + ex.getConstraintViolations().iterator().next().getMessage());
+        }
     }
 
 }
