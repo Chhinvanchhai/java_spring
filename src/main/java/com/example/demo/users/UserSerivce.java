@@ -25,7 +25,24 @@ public class UserSerivce {
         return save;
     }
 
-    public void deleteById(int i) {
+    // public User deleteById(Long id) {
+    //     Optional<User> user = userRepository.findById(id);
+    //     if (user.isPresent()) {
+    //         userRepository.deleteById(id);
+    //         return user.get(); // Return the deleted user
+    //     } else {
+    //         return null; // Return null if the user was not found
+    //     }
+    // }
+
+    public boolean deleteById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            userRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Optional<User> findById(Long id) {

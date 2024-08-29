@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.ApiResponse;
+
 import jakarta.validation.ConstraintViolationException;
 
 
@@ -49,7 +53,12 @@ public class UserController {
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable("id") Long id) {
-        this.userSerivce.deleteById(1);
+    public ResponseEntity<ApiResponse> delete(@PathVariable("id") Long id) {
+        boolean  isDeleted = userSerivce.deleteById(id);
+        if (isDeleted) {
+            return new ResponseEntity<>(new ApiResponse(true, "Successful"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ApiResponse(false, "User not found"), HttpStatus.NOT_FOUND);
+        }
     }
 }
